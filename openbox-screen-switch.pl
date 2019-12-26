@@ -59,8 +59,12 @@ sub prev_location()
 
 	parse_location($data);
 	__exec("xdotool mousemove --screen $screen $x $y");
-	__exec("xdotool windowfocus $window");
-	__exec("xdotool windowactivate $window");
+	if ($window != 0) {
+		__exec("xdotool windowfocus $window");
+		__exec("xdotool windowactivate $window");
+	} else {
+		__exec("xdotool click 1");
+	}
 }
 
 sub switch($)
