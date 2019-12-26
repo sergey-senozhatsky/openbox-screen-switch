@@ -2,6 +2,15 @@
 
 my $screen = 0, $x = 777, $y = 777, $window = 0;
 
+sub __exec($)
+{
+	my $c = shift;
+	my $r = `$c`;
+
+	print "Error: $c\n" if ($? != 0);
+	return $r;
+}
+
 sub parse_location($)
 {
 	my $d = shift;
@@ -30,7 +39,7 @@ sub current_location()
 	my $filename;
 	my $data;
 
-	$data = `xdotool getmouselocation`;
+	$data = __exec("xdotool getmouselocation");
 	parse_location($data);
 	write_location();
 }
@@ -49,10 +58,9 @@ sub prev_location()
 	}
 
 	parse_location($data);
-	print "xdotool mousemove --screen $screen $x $y\n";
-	`xdotool mousemove --screen $screen $x $y`;
-	`xdotool windowfocus $window`;
-	`xdotool windowactivate $window`;
+	__exec("xdotool mousemove --screen $screen $x $y");
+	__exec("xdotool windowfocus $window");
+	__exec("xdotool windowactivate $window");
 }
 
 sub switch($)
